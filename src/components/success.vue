@@ -12,7 +12,7 @@
           </li>
           <li class="clearfix order-detail">
               <div class="img-show">
-                  <img src="https://s3.amazonaws.com/lp.martdealer.com/web/image/20171103/b374ad3ad7fb4e728edcac26776ca65c.jpg" alt="">
+                  <img :src="items.img" alt="">
               </div>
               <div class="detail-show">
                   <div class="product-name">
@@ -20,14 +20,13 @@
                   </div>
                   <div class="product-detail">
                       <div class="attr">
-                          <span class="gray">尺寸:100CM;顏色:淺藍色;</span>
-                          <span class="gray">数量：1</span>
-                          <span class="gray">货到付款</span>
+                          <span class="gray">名字:{{items.name}};顏色:{{items.option1}};尺寸:{{items.option2}};</span>
+                          <span class="gray">数量：{{items.num}}</span>
+                          <span class="gray" v-if="items.value === 0">货到付款</span>
                       </div>
-                     
                          <div class="pay">
                           <span class="gray">
-                              <span class="orange">總計：<i>1137</i></span>
+                              <span class="orange">總計：<i>{{items.price*items.num}}</i></span>
                           </span>
                         </div>
                      
@@ -49,12 +48,11 @@ export default {
   data() {
     return {
       msg: "提交成功",
-      items:[]
+      items:{}
     };
   },
   created(){
-    this.items=JSON.parse(window.localStorage.getItem("itemss"))
-    console.log(this.items);
+    this.items=JSON.parse(window.localStorage.getItem("itemss"));
   }
 };
 </script>

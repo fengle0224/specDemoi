@@ -71,11 +71,7 @@
                 <i class="red">*</i><span class="name">地址:</span>
             </label>
             <div class="input-infor" id="chooseArea">
-               <select id="province"  class="select"></select>
-                <select id="city" class="select">
-                   <option >選擇縣市</option>
-                </select>
-                <select id="area" class="select" ><option>選擇區域</option></select>
+                <v-distpicker :province="submit.province" :city="submit.city" :area="submit.area" ></v-distpicker>
             </div>
         </div>
         <div class="form-group">
@@ -95,7 +91,7 @@
             </label>
             <div class="input-infor">
                 <input  name="email" type="email" class="text-left contact" id="email" placeholder="" v-model="submit.email">
-                 
+                
             </div>
         </div>
         <div class="form-group">
@@ -164,10 +160,12 @@
 
 </template>
 <script>
-import Area from "../../static/js/area.js";
 import axios from 'axios';
+import VDistpicker from 'v-distpicker'
+
 export default {
   name: "Purchase",
+  components: { VDistpicker },
   data() {
     return {
       newPurchase: [
@@ -280,9 +278,9 @@ export default {
       submit: {
         name: "",
         phone: "",
-        // province: "",
-        // city: "",
-        // area: "",
+         province: "台湾省",
+         city: "",
+         area: "",
         detailAddress: "",
         email: "",
         facebook: "",
@@ -298,11 +296,13 @@ export default {
   methods: {
     //最新购买消息循环显示 
     scroll() {
-      let temp = this.newPurchase[1];
+      let temp = this.newPurchase[0];
       this.newPurchase.shift();
       this.newPurchase.push(temp);
       $(".scroll_div").css("top", "0px");
-      $(".scroll_div").animate({ top:"-34px" }, "normal");
+     $(".scroll_div").animate({ top:"-34px" }, "slow");
+     
+     
     },
 
     // 字符串排序
@@ -447,47 +447,40 @@ export default {
     },
     //表单验证
     toBuy() {
-      // var TW_phone = /^([-_－—\s\(]?)([\(]?)((((0?)|((00)?))(((\s){0,2})|([-_－—\s]?)))|(([\)]?)[+]?))(886)?([\)]?)([-_－—\s]?)([\(]?)[0]?[1-9]{1}([-_－—\s\)]?)[0-9]{2}[-_－—]?[0-9]{3}[-_－—]?[0-9]{3}$/;
-      // if (this.id == 0) {
-      //   this.info = "请选择商品相对应的规格";
-      //   this.show = true;
-      // } else if (this.submit.name == "") {
-      //   this.info = "请输入您的姓名";
-      //   this.show = true;
-      // } else if (this.submit.phone == "") {
-      //   this.info = "请输入您的电话";
-      //   this.show = true;
-      // } else if (!TW_phone.test(this.submit.phone)) {
-      //   this.info = "请输入您电话的正确格式";
-      //   this.show = true;
+      var TW_phone = /^([-_－—\s\(]?)([\(]?)((((0?)|((00)?))(((\s){0,2})|([-_－—\s]?)))|(([\)]?)[+]?))(886)?([\)]?)([-_－—\s]?)([\(]?)[0]?[1-9]{1}([-_－—\s\)]?)[0-9]{2}[-_－—]?[0-9]{3}[-_－—]?[0-9]{3}$/;
+      if (this.id == 0) {
+        this.info = "请选择商品相对应的规格";
+        this.show = true;
+      } else if (this.submit.name == "") {
+        this.info = "请输入您的姓名";
+        this.show = true;
+      } else if (this.submit.phone == "") {
+        this.info = "请输入您的电话";
+        this.show = true;
+      } else if (!TW_phone.test(this.submit.phone)) {
+        this.info = "请输入您电话的正确格式";
+        this.show = true;
       // } else if (this.submit.city == "") {
       //   this.info = "请输入您所在的城市";
       //   this.show = true;
       // } else if (this.submit.area == "") {
       //   this.info = "请输入您所在的区或县";
       //   this.show = true;
-      // } else if (this.submit.detailAddress == "") {
-      //   this.info = "请输入您所在的详细地址";
-      //   this.show = true;
-      // } else if (this.submit.value == "") {
-      //   this.info = "请输入您的付款方式";
-      //   this.show = true;
-      // } else if (
-      //   this.submit.email == "" &&
-      //   this.submit.facebook == "" &&
-      //   this.submit.line == ""
-      // ) {
-      //   this.info = "请至少选择一种联系方式";
-      //   this.show = true;
-      // }
-
-      // if (this.show == true) {
-      //   setTimeout(() => {
-      //     this.show = false;
-      //   }, 3000);
-      // }
-      // else{
-      //  axios.post("/user", {
+      } else if (this.submit.detailAddress == "") {
+        this.info = "请输入您所在的详细地址";
+        this.show = true;
+      } else if (this.submit.value == "") {
+        this.info = "请输入您的付款方式";
+        this.show = true;
+      } else if (
+        this.submit.email == "" &&
+        this.submit.facebook == "" &&
+        this.submit.line == ""
+      ) {
+        this.info = "请至少选择一种联系方式";
+        this.show = true;
+      }else{
+        //  axios.post("/user", {
       //     firstName: "Fred",
       //     lastName: "Flintstone"
       //   })
@@ -497,27 +490,31 @@ export default {
       //   .catch(function(error) {
       //     console.log(error);
       //   });
-      // }
-      var items=[{id:this.id,num:this.num}];
-      localStorage.setItem("itemss",JSON.stringify(items));
-      this.$router.push({
+        var items={price:this.price,num:this.num,img:this.img,price:this.price,name:this.selected_good.name,option1:this.selected_good.option1,option2:this.selected_good.option2,value:this.submit.value};
+        localStorage.setItem("itemss",JSON.stringify(items));
+        this.$router.push({
             name: 'Success',
             params: { 
                 dataObj: items
             }
-      })
+        })
+      }
+
+      if (this.show == true) {
+        setTimeout(() => {
+          this.show = false;
+        }, 3000);
+      }
+     
+      
+      
+      
     }
   },
   mounted() {
     setInterval(() => {
       this.scroll();
-    }, 1000);
-    try {
-      Area.showarea();
-      Area.preselect(this.appData.language);
-    } catch (ex) {
-      console.log(ex);
-    }
+    }, 2000);
   }
 };
 </script>
