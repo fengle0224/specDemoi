@@ -448,6 +448,7 @@ export default {
     //表单验证
     toBuy() {
       var TW_phone = /^([-_－—\s\(]?)([\(]?)((((0?)|((00)?))(((\s){0,2})|([-_－—\s]?)))|(([\)]?)[+]?))(886)?([\)]?)([-_－—\s]?)([\(]?)[0]?[1-9]{1}([-_－—\s\)]?)[0-9]{2}[-_－—]?[0-9]{3}[-_－—]?[0-9]{3}$/;
+      var Email=/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
       if (this.id == 0) {
         this.info = "请选择商品相对应的规格";
         this.show = true;
@@ -479,6 +480,9 @@ export default {
       ) {
         this.info = "请至少选择一种联系方式";
         this.show = true;
+      }else if( this.submit.email !== "" && !Email.test(this.submit.email)){
+           this.info = "您邮箱格式不正确";
+           this.show = true;
       }else{
         //  axios.post("/user", {
       //     firstName: "Fred",
