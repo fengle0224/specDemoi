@@ -71,7 +71,7 @@
                 <i class="red">*</i><span class="name">地址:</span>
             </label>
             <div class="input-infor" id="chooseArea">
-                <v-distpicker :province="submit.province" :city="submit.city" :area="submit.area" ></v-distpicker>
+                <v-distpicker :province="submit.province"  :city="submit.city" :area="submit.area"  @selected="onSelected"></v-distpicker>
             </div>
         </div>
         <div class="form-group">
@@ -161,11 +161,12 @@
 </template>
 <script>
 import axios from 'axios';
-import VDistpicker from 'v-distpicker'
-
+import VDistpicker from '../../static/js/v-distpicker.js'
 export default {
   name: "Purchase",
-  components: { VDistpicker },
+  components: { 
+    VDistpicker
+  },
   data() {
     return {
       newPurchase: [
@@ -289,11 +290,15 @@ export default {
         message: ""
       },
       info: "",
-      show: false
+      show: false,
     };
   },
-  created() {},
   methods: {
+    // 省市区选择
+    onSelected: function (data) {
+        this.submit.city=data.city.value;
+        this.submit.area=data.area.value;
+      },
     //最新购买消息循环显示 
     scroll() {
       let temp = this.newPurchase[0];
@@ -301,8 +306,6 @@ export default {
       this.newPurchase.push(temp);
       $(".scroll_div").css("top", "0px");
      $(".scroll_div").animate({ top:"-34px" }, "slow");
-     
-     
     },
 
     // 字符串排序
@@ -436,15 +439,6 @@ export default {
     add() {
       this.num = this.num + 1;
     },
-    initselect() {
-      try {
-        Area.showarea();
-        // console.log(Area.showarea());
-        preselect(this.appData.language);
-      } catch (ex) {
-        console.log(ex);
-      }
-    },
     //表单验证
     toBuy() {
       var TW_phone = /^([-_－—\s\(]?)([\(]?)((((0?)|((00)?))(((\s){0,2})|([-_－—\s]?)))|(([\)]?)[+]?))(886)?([\)]?)([-_－—\s]?)([\(]?)[0]?[1-9]{1}([-_－—\s\)]?)[0-9]{2}[-_－—]?[0-9]{3}[-_－—]?[0-9]{3}$/;
@@ -461,12 +455,12 @@ export default {
       } else if (!TW_phone.test(this.submit.phone)) {
         this.info = "请输入您电话的正确格式";
         this.show = true;
-      // } else if (this.submit.city == "") {
-      //   this.info = "请输入您所在的城市";
-      //   this.show = true;
-      // } else if (this.submit.area == "") {
-      //   this.info = "请输入您所在的区或县";
-      //   this.show = true;
+      } else if (this.submit.city == "") {
+        this.info = "请输入您所在的城市";
+        this.show = true;
+      } else if (this.submit.area == "") {
+        this.info = "请输入您所在的区或县";
+        this.show = true;
       } else if (this.submit.detailAddress == "") {
         this.info = "请输入您所在的详细地址";
         this.show = true;
@@ -485,15 +479,15 @@ export default {
            this.show = true;
       }else{
         //  axios.post("/user", {
-      //     firstName: "Fred",
-      //     lastName: "Flintstone"
-      //   })
-      //   .then(function(response) {
-      //     console.log(response);
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
+        //   id:this.id,
+        //   info:this.submit,
+        // })
+        // .then(function(response) {
+        //   console.log(response);
+        // })
+        // .catch(function(error) {
+        //   console.log(error);
+        // });
         var items={price:this.price,num:this.num,img:this.img,price:this.price,name:this.selected_good.name,option1:this.selected_good.option1,option2:this.selected_good.option2,value:this.submit.value};
         localStorage.setItem("itemss",JSON.stringify(items));
         this.$router.push({
@@ -509,16 +503,14 @@ export default {
           this.show = false;
         }, 3000);
       }
-     
-      
-      
-      
+
     }
   },
   mounted() {
     setInterval(() => {
       this.scroll();
     }, 2000);
+    $(".distpicker-address-wrapper").children("select").eq(0).css("display","none");
   }
 };
 </script>

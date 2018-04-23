@@ -1,5 +1,5 @@
 <template>
-  <div class="ionfo">
+  <div class="info">
    <div class="success">
         <img src="http://lp.martdealer.com/source/v11/m/images/success.png" alt="">
         <span class="line1">{{msg}}</span>

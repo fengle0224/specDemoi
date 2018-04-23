@@ -44,7 +44,7 @@
         <div class="time-limit">
             <p class="lf">限時搶購</p>
             <p class="rt">距結束
-                 <span>{{days}}</span>天
+                 <!-- <span>{{days}}</span>天 -->
                 <span>{{hours}}</span>時
                 <span>{{minutes}}</span>分
                 <span>{{seconds}}</span>秒</p>
@@ -160,7 +160,10 @@
     </div>
     <!-- 立即购买 -->
     <div class="fixbar">
-        <div class="order-query"><a href="order.html"><span></span>訂單查詢</a></div>
+        <router-link to="/order">
+            <div class="order-query"><span></span>訂單查詢</div>
+        </router-link>
+        
         <div class="order-btn" id="order" @click="sendParams">立即購買</div>
       
        
@@ -226,7 +229,7 @@ export default {
         {"commentId":"******58753","commentName":"韓**","commentTime":"2018-04-13","commentContent":"真心好用，会回购"},
         {"commentId":"******58753","commentName":"韓**","commentTime":"2018-04-13","commentContent":"真心好用，会回购"}
       ],
-     endTime:'2018-04-20 14:00:00',
+     endTime:'2018-04-23 14:00:00',
      days:0,
      hours:0,
      minutes:0,
