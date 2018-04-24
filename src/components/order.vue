@@ -8,7 +8,7 @@
         </div>
         <label class="query-btn" @click="queryOrder">查詢</label>
     </div>
-    <div class="order-state" v-show="orderState"></div>
+    <div class="order-state" v-show="orderState">{{info}}</div>
     <ul class="support-tag">
         <li>
             <span></span>
@@ -38,20 +38,30 @@ export default {
   data(){
       return{
           orderId:'',
-          orderState:false
+          orderState:false,
+          info:''
       }
   },
   methods:{
       queryOrder(){
-        // axios.post('/user', {
-        //     orderId: this.orderId,
-        // })
-        // .then(function (response) {
-        //     console.log(response);
-        // })
-        // .catch(function (error) {
-        //     console.log(error);
-        // });
+           this.orderState=false;
+          if(this.orderId==""){
+              this.orderState=!this.orderState;
+              this.info="您的订单号不能为空"
+          }else{
+            // axios.post('/user', {
+            //     orderId: this.orderId,
+            // })
+            // .then(function (response) {
+            //     console.log(response);
+            // })
+            // .catch(function (error) {
+            //     console.log(error);
+            // });
+             this.orderState=!this.orderState;
+              this.info="您的订单正在派送中"
+          }
+        
         }
     }
 };

@@ -229,7 +229,7 @@ export default {
         {"commentId":"******58753","commentName":"韓**","commentTime":"2018-04-13","commentContent":"真心好用，会回购"},
         {"commentId":"******58753","commentName":"韓**","commentTime":"2018-04-13","commentContent":"真心好用，会回购"}
       ],
-     endTime:'2018-04-23 14:00:00',
+     endTime:'2018-05-23 14:00:00',
      days:0,
      hours:0,
      minutes:0,
@@ -315,7 +315,7 @@ export default {
          this.comment.pop();
          this.comment.unshift(temp);
          $('ul.allpj li:first').css("height","0px");
-         $('ul.allpj li:first').animate({height: '+74px'}, "normal");     
+         $('ul.allpj li:first').animate({height: '+74px'}, "slow");     
      },
       sendParams () {
         this.$router.push({
