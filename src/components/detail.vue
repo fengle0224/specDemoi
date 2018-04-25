@@ -57,13 +57,13 @@
     <div class="product-detail">
         <ul class="main-tab">
             <li class="selected-tab">
-                <a href="#detail">商品詳情</a>
+                <a href="javascript:void(0)" @click="locateAt('detail')">商品詳情</a>
             </li>
             <li>
-                <a href="#params">商品參數</a>
+                <a href="javascript:void(0)"  @click="locateAt('params')">商品參數</a>
             </li>
             <li>
-                <a href="#evaluate">評價(1023)</a>
+                <a href="javascript:void(0)" @click="locateAt('evaluate')">評價(1023)</a>
             </li>
         </ul>
         <!-- 商品详情 -->
@@ -255,9 +255,9 @@ export default {
   },
 
   mounted(){
-      $(".main-tab li").click(function(){
-        $(this).addClass("selected-tab").siblings("li").removeClass("selected-tab");
-      });
+    //   $(".main-tab li").click(function(){
+    //     $(this).addClass("selected-tab").siblings("li").removeClass("selected-tab");
+    // });
     //   评价列表动效
      setInterval(()=>{
         this.evaluate();
@@ -268,13 +268,11 @@ export default {
         var top = $('.product-detail').offset().top;
         var top1 = $("#detail").offset().top;
         var top2 = $("#params").offset().top;
-   
-        var top3 = $("#evaluate").offset().top;
-        
+        var top3 = $("#evaluate").offset().top;  
         //开始监控滚动栏scroll
         $(document).scroll(function(){
             //获取当前滚动栏scroll的高度并赋值
-            var scrTop = $(window).scrollTop()+84;
+            var scrTop = $(window).scrollTop()+100;
             //开始判断如果导航栏距离顶部的高度等于当前滚动栏的高度则开启悬浮
             if(scrTop >= top){
                 $('.main-tab').css({'position':'fixed','top':'0','width':'100%','max-width':'640px','background':'#fff'});
@@ -282,9 +280,9 @@ export default {
                 if(scrTop>=top1&&scrTop<top2){
                    $(".main-tab li").eq(0).addClass("selected-tab").siblings("li").removeClass("selected-tab");
                 }else if(scrTop>=top2&&scrTop<top3){
-                   $(".main-tab li").eq(1).addClass("selected-tab").siblings("li").removeClass("selected-tab");
+                   $(".main-tab li").eq(1).addClass("selected-tab").siblings("li").removeClass("selected-tab"); 
                 }else if(scrTop>=top3){
-                    $(".main-tab li").eq(2).addClass("selected-tab").siblings("li").removeClass("selected-tab");
+                    $(".main-tab li").eq(2).addClass("selected-tab").siblings("li").removeClass("selected-tab");    
                 }
             }else{//否则清空悬浮
                 $('.main-tab').css({'position':'','top':''});
@@ -295,6 +293,13 @@ export default {
     })  
   },
   methods:{
+     locateAt(e){
+        let id =  document.getElementById(e);
+        let y = id.offsetTop;    
+        while(id=id.offsetParent){ y += id.offsetTop;}  
+        y-=42;
+        window.scrollTo(0,y);  
+    } ,
      timeDown(){
         //   倒计时
         var nowTime=new Date();
@@ -333,5 +338,4 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
  @import '../../static/css/index.css';
-
 </style>

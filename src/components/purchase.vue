@@ -17,19 +17,22 @@
           <li class="size clearfix" data-attributeid="3876">
             <span class="name"><i>*</i>顏色</span>
             <ul class="num">
-                <li :class="{active:selected_good.name===item.name}" @click="selected(item)"  v-for="(item,index) in check_spec_repeat(allAttr)" :key="index">{{item.name}}</li>
+                <li :class="{active:selected_good.name===item.name}" @click="selected(item)"  v-for="(item,index) in check_spec_repeat(allAttr)"
+                 :key="index">{{item.name}}</li>
             </ul>
           </li>
           <li class="size" data-attributeid="3877">
             <span class="name"><i>*</i>尺寸</span>
             <ul class="num">
-              <li :class="{active:selected_good.option1===item.option1,disabled:selected_good.name!==item.name}"  @click="selectedName(item)"  v-for="(item,index) in check_option1_repeat(allAttr)" :key="index">{{item.option1}}</li>
+              <li :class="{active:selected_good.option1===item.option1&&selected_good.name===item.name,disabled:selected_good.name!==item.name}"
+                @click="selectedName(item)"  v-for="(item,index) in check_option1_repeat(allAttr)" :key="index">{{item.option1}}</li>
             </ul>
           </li>
           <li class="size" data-attributeid="3877">
             <span class="name"><i>*</i>套餐</span>
             <ul class="num">
-              <li :class="{active:selected_good.option2===item.option2,disabled:selected_good.option1!==item.option1}"  @click="selectedOption1(item)" v-for="(item,index) in check_option2_repeat(allAttr)" :key="index">{{item.option2}}</li>
+              <li :class="{active:selected_good.option2===item.option2&&selected_good.option1===item.option1&&selected_good.name===item.name,disabled:selected_good.option1!==item.option1}"
+                @click="selectedOption1(item)" v-for="(item,index) in check_option2_repeat(allAttr)" :key="index">{{item.option2}}</li>
             </ul>
           </li>
           <li class="amount">
@@ -198,6 +201,15 @@ export default {
           img: "../../static/images/banner1.jpg"
         },
         {
+          id: 194843,
+          name: "一一一一",
+          sku: null,
+          option1: "黑色",
+          option2: "测试2",
+          price: 1000,
+          img: "../../static/images/banner1.jpg"
+        },
+        {
           id: 174068,
           name: "二二二二",
           sku: null,
@@ -205,33 +217,6 @@ export default {
           option2: "测试1",
           price: 1888,
           img: "../../static/images/banner2.jpg"
-        },
-        {
-          id: 174069,
-          name: "四四四四",
-          sku: null,
-          option1: "黑色",
-          option2: "测试2",
-          price: 1888,
-          img: "../../static/images/banner3.jpg"
-        },
-        {
-          id: 174070,
-          name: "三三三三",
-          sku: null,
-          option1: "藍色",
-          option2: "测试1",
-          price: 1888,
-          img: "../../static/images/banner4.jpg"
-        },
-        {
-          id: 194843,
-          name: "一一一一",
-          sku: null,
-          option1: "黑色",
-          option2: "测试2",
-          price: 1999,
-          img: "../../static/images/banner1.jpg"
         },
         {
           id: 194852,
@@ -243,13 +228,13 @@ export default {
           img: "../../static/images/banner2.jpg"
         },
         {
-          id: 194853,
-          name: "四四四四",
+          id: 174070,
+          name: "三三三三",
           sku: null,
-          option1: "黑色",
+          option1: "藍色",
           option2: "测试1",
-          price: 1999,
-          img: "../../static/images/banner3.jpg"
+          price: 1888,
+          img: "../../static/images/banner4.jpg"
         },
         {
           id: 194854,
@@ -259,6 +244,24 @@ export default {
           option2: "测试2",
           price: 1999,
           img: "../../static/images/banner4.jpg"
+        },
+        {
+          id: 194853,
+          name: "四四四四",
+          sku: null,
+          option1: "黑色",
+          option2: "测试1",
+          price: 1999,
+          img: "../../static/images/banner3.jpg"
+        },
+        {
+          id: 174069,
+          name: "四四四四",
+          sku: null,
+          option1: "黑色",
+          option2: "测试2",
+          price: 1888,
+          img: "../../static/images/banner3.jpg"
         }
       ],
       newIndex: -1,
@@ -339,14 +342,21 @@ export default {
           }
         }
       }
+       this.selected_good.option1=null;
+       this.selected_good.option2=null;
     },
     // 二级菜单点击事件
     selectedName(item) {
+      this.selected_good.option1=null;
+       this.selected_good.option2=null;
       this.selected_good.option1 = item.option1;
+
+      
     },
     // 三级菜单点击事件
     selectedOption1(item) {
       this.selected_good.option2 = item.option2;
+     
       // 选取对应价格
       for (let i in this.allAttr) {
         if (
@@ -403,30 +413,31 @@ export default {
     // 三级数组去重并重新排列
     check_option2_repeat(list) {
       let templist = [];
-      let option1list = [];
+      let option2list = [];
       if (this.selected_good.option1) {
         for (let i in list) {
-          if (list[i].option1 === this.selected_good.option1) {
-            if (option1list.indexOf(list[i].option2) < 0) {
+          if (list[i].name === this.selected_good.name&&list[i].option1 === this.selected_good.option1) {
+            if (option2list.indexOf(list[i].option2) < 0) {
               templist.push(list[i]);
-              option1list.push(list[i].option2);
+              option2list.push(list[i].option2);
             }
           }
         }
         for (var i in list) {
-          if (option1list.indexOf(list[i].option2) < 0) {
+          if (option2list.indexOf(list[i].option2) < 0) {
             templist.push(list[i]);
-            option1list.push(list[i].option2);
+            option2list.push(list[i].option2);
           }
         }
       } else {
         for (var i in list) {
-          if (option1list.indexOf(list[i].option2) < 0) {
+          if (option2list.indexOf(list[i].option2) < 0) {
             templist.push(list[i]);
-            option1list.push(list[i].option2);
+            option2list.push(list[i].option2);
           }
         }
       }
+     
       return templist.sort(this.by("option2"));
     },
     // 数量减小
